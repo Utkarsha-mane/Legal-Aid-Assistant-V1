@@ -60,15 +60,6 @@ class DeleteResponse(BaseModel):
     chunks_deleted: Optional[int] = None
 
 def extract_text_from_pdf(pdf_path: Path) -> str:
-    """
-    Extract text content from a PDF file.
-    
-    Args:
-        pdf_path: Path to the PDF file
-        
-    Returns:
-        Extracted text as a string
-    """
     try:
         with open(pdf_path, 'rb') as file:
             pdf_reader = PyPDF2.PdfReader(file)
@@ -116,22 +107,6 @@ async def root():
 
 @app.post("/upload", response_model=UploadResponse)
 async def upload_pdf(file: UploadFile = File(...)):
-    """
-    Upload and process a PDF file for legal case retrieval.
-    
-    Steps:
-    1. Save uploaded PDF
-    2. Extract text from PDF
-    3. Chunk text using legal-aware chunking
-    4. Generate embeddings for chunks
-    5. Add to vector store
-    
-    Args:
-        file: Uploaded PDF file
-        
-    Returns:
-        UploadResponse with success status and details
-    """
     global vector_store, embeddings_client, chunker
     
     # Validate file type
@@ -221,20 +196,6 @@ async def upload_pdf(file: UploadFile = File(...)):
 
 @app.post("/query", response_model=QueryResponse)
 async def query_legal_assistant(request: QueryRequest):
-    """
-    Query the legal assistant with a question.
-    
-    Steps:
-    1. Embed the user's question
-    2. Retrieve relevant chunks from vector store
-    3. Generate grounded answer using LLM
-    
-    Args:
-        request: QueryRequest containing the user's question
-        
-    Returns:
-        QueryResponse with generated answer and source chunks
-    """
     global vector_store, embeddings_client
     
     if vector_store is None or vector_store.index is None:
