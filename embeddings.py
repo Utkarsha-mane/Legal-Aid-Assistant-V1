@@ -5,11 +5,6 @@ import numpy as np
 
 
 class OllamaEmbeddings:
-    """
-    Interface to Ollama's embedding API using nomic-embed-text model.
-    Handles batching and error recovery.
-    """
-    
     def __init__(self, base_url: str = "http://localhost:11434", model: str = "nomic-embed-text"):
         """
         Initialize Ollama embeddings client.
@@ -23,12 +18,6 @@ class OllamaEmbeddings:
         self.embed_url = f"{base_url}/api/embeddings"
         
     def check_model_availability(self) -> bool:
-        """
-        Verify that the embedding model is available in Ollama.
-        
-        Returns:
-            True if model is available, False otherwise
-        """
         try:
             response = requests.get(f"{self.base_url}/api/tags")
             if response.status_code == 200:
@@ -39,18 +28,6 @@ class OllamaEmbeddings:
         return False
     
     def embed_text(self, text: str) -> List[float]:
-        """
-        Generate embedding for a single text string.
-        
-        Args:
-            text: Input text to embed
-            
-        Returns:
-            Embedding vector as list of floats
-            
-        Raises:
-            Exception if embedding fails
-        """
         try:
             payload = {
                 "model": self.model,
@@ -77,16 +54,6 @@ class OllamaEmbeddings:
             raise Exception(f"Error generating embedding: {str(e)}")
     
     def embed_batch(self, texts: List[str], show_progress: bool = True) -> List[List[float]]:
-        """
-        Generate embeddings for multiple texts with progress tracking.
-        
-        Args:
-            texts: List of text strings to embed
-            show_progress: Whether to print progress updates
-            
-        Returns:
-            List of embedding vectors
-        """
         embeddings = []
         total = len(texts)
         
@@ -112,12 +79,6 @@ class OllamaEmbeddings:
         return embeddings
     
     def get_embedding_dimension(self) -> int:
-        """
-        Get the dimensionality of embeddings from this model.
-        
-        Returns:
-            Embedding vector dimension
-        """
         try:
             # Generate a test embedding to determine dimension
             test_embedding = self.embed_text("test")
