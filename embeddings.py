@@ -6,13 +6,6 @@ import numpy as np
 
 class OllamaEmbeddings:
     def __init__(self, base_url: str = "http://localhost:11434", model: str = "nomic-embed-text"):
-        """
-        Initialize Ollama embeddings client.
-        
-        Args:
-            base_url: Ollama API endpoint
-            model: Embedding model name
-        """
         self.base_url = base_url
         self.model = model
         self.embed_url = f"{base_url}/api/embeddings"
