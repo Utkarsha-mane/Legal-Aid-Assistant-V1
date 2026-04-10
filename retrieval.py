@@ -4,33 +4,12 @@ from vector_store import FAISSVectorStore
 
 
 class RetrievalPipeline:
-    """
-    Handles query processing, embedding, and context retrieval.
-    Orchestrates the semantic search process.
-    """
     
     def __init__(self, vector_store: FAISSVectorStore, embeddings: OllamaEmbeddings):
-        """
-        Initialize retrieval pipeline.
-        
-        Args:
-            vector_store: FAISS vector store instance
-            embeddings: Ollama embeddings instance
-        """
         self.vector_store = vector_store
         self.embeddings = embeddings
     
     def retrieve_context(self, query: str, top_k: int = 5) -> Dict[str, Any]:
-        """
-        Main retrieval method: converts query to embedding and finds relevant chunks.
-        
-        Args:
-            query: User's legal question
-            top_k: Number of chunks to retrieve
-            
-        Returns:
-            Dictionary with retrieved chunks and metadata
-        """
         try:
             # Step 1: Embed the query
             print(f"Embedding query: '{query[:100]}...'")
@@ -83,15 +62,6 @@ class RetrievalPipeline:
             }
     
     def format_context_for_generation(self, retrieval_results: Dict[str, Any]) -> str:
-        """
-        Convert retrieved chunks into a formatted context string for LLM.
-        
-        Args:
-            retrieval_results: Output from retrieve_context()
-            
-        Returns:
-            Formatted context string
-        """
         if not retrieval_results.get('success') or not retrieval_results.get('results'):
             return ""
         
@@ -106,12 +76,6 @@ class RetrievalPipeline:
         return "\n---\n".join(context_parts)
     
     def get_all_chunks_for_summary(self) -> Dict[str, Any]:
-        """
-        Retrieve all chunks from vector store for case summary generation.
-        
-        Returns:
-            Dictionary with all chunks organized by section type
-        """
         try:
             if not self.vector_store or not self.vector_store.metadata:
                 return {
