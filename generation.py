@@ -4,10 +4,6 @@ from typing import Dict, Any
 
 
 class LegalAnswerGenerator:
-    """
-    Generates grounded answers using Ollama's LLaMA3 model.
-    Implements strict prompt engineering to prevent hallucinations.
-    """
     
     def __init__(self, base_url: str = "http://localhost:11434", model: str = "llama3:8b"):
         """
@@ -36,16 +32,6 @@ STRICT RULES:
 Context will be provided between [CONTEXT START] and [CONTEXT END] markers."""
     
     def generate_answer(self, query: str, context: str) -> Dict[str, Any]:
-        """
-        Generate grounded answer from query and retrieved context.
-        
-        Args:
-            query: User's question
-            context: Retrieved document chunks
-            
-        Returns:
-            Dictionary with answer and metadata
-        """
         if not context or context.strip() == "":
             return {
                 'success': True,
