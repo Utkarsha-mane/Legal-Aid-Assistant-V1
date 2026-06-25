@@ -6,13 +6,6 @@ from typing import Dict, Any
 class LegalAnswerGenerator:
     
     def __init__(self, base_url: str = "http://localhost:11434", model: str = "llama3:8b"):
-        """
-        Initialize LLM generator.
-        
-        Args:
-            base_url: Ollama API endpoint
-            model: Generation model name
-        """
         self.base_url = base_url
         self.model = model
         self.generate_url = f"{base_url}/api/generate"
@@ -94,12 +87,6 @@ Answer (based strictly on the context above):"""
             }
     
     def check_model_availability(self) -> bool:
-        """
-        Verify that the generation model is available in Ollama.
-        
-        Returns:
-            True if model is available
-        """
         try:
             response = requests.get(f"{self.base_url}/api/tags")
             if response.status_code == 200:
