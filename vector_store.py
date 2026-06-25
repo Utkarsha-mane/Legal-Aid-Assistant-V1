@@ -13,12 +13,6 @@ class FAISSVectorStore:
     """
     
     def __init__(self, storage_path: str = "./storage"):
-        """
-        Initialize FAISS vector store.
-        
-        Args:
-            storage_path: Directory for persisting index and metadata
-        """
         self.storage_path = Path(storage_path)
         self.index_path = self.storage_path / "faiss_index"
         self.metadata_path = self.storage_path / "metadata.json"
@@ -158,7 +152,7 @@ class FAISSVectorStore:
     
     def clear(self):
         """
-        Clear all data from the vector store.
+        Clear data from the vector store.
         """
         self.index = None
         self.metadata = []
