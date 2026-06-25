@@ -7,7 +7,6 @@ import time
 BACKEND_URL = "http://localhost:8000"
 
 def check_backend_status():
-    """Check if backend is running and accessible."""
     try:
         response = requests.get(f"{BACKEND_URL}/", timeout=2)
         return response.status_code == 200
@@ -15,15 +14,6 @@ def check_backend_status():
         return False
 
 def upload_pdf(file):
-    """
-    Upload a PDF file to the backend for processing.
-    
-    Args:
-        file: Streamlit UploadedFile object
-        
-    Returns:
-        dict: Response from backend API
-    """
     try:
         files = {"file": (file.name, file, "application/pdf")}
         response = requests.post(f"{BACKEND_URL}/upload", files=files, timeout=120)
@@ -33,15 +23,6 @@ def upload_pdf(file):
         return {"success": False, "message": f"Upload failed: {str(e)}"}
 
 def query_assistant(question):
-    """
-    Send a query to the legal assistant.
-    
-    Args:
-        question: User's legal question
-        
-    Returns:
-        dict: Response containing answer and sources
-    """
     try:
         response = requests.post(
             f"{BACKEND_URL}/query",
@@ -54,12 +35,6 @@ def query_assistant(question):
         return {"error": f"Query failed: {str(e)}"}
 
 def delete_all_chunks():
-    """
-    Delete all chunks from the vector store.
-    
-    Returns:
-        dict: Response from backend API
-    """
     try:
         response = requests.delete(f"{BACKEND_URL}/delete-all", timeout=10)
         response.raise_for_status()
@@ -68,7 +43,6 @@ def delete_all_chunks():
         return {"success": False, "message": f"Delete failed: {str(e)}"}
 
 def get_system_status():
-    """Get current system status from backend."""
     try:
         response = requests.get(f"{BACKEND_URL}/status", timeout=5)
         response.raise_for_status()
@@ -176,26 +150,6 @@ if backend_online:
         if ollama_status != "connected":
             st.error(f"""
 🚨 **Ollama Connection Error:** {ollama_status}
-
-**Please ensure Ollama is running:**
-```bash
-ollama serve
-```
-
-**Then verify required models are installed:**
-```bash
-ollama list
-```
-
-You should see:
-- `nomic-embed-text` (for embeddings)
-- `llama3:8b` (for question answering)
-
-If missing, pull them:
-```bash
-ollama pull nomic-embed-text
-ollama pull llama3:8b
-```
             """)
             st.stop()
 
@@ -220,30 +174,7 @@ else:
         unsafe_allow_html=True
     )
     st.error("""
-🚨 **Backend server is not running**
-
-**Start the backend:**
-```bash
-cd backend
-python app.py
-```
-
-Or in a separate terminal with auto-reload:
-```bash
-python -m uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
-```
-
-**Also ensure Ollama is running:**
-```bash
-ollama serve
-```
-
-**Then download required models:**
-```bash
-ollama pull nomic-embed-text
-ollama pull llama3:8b
-```
-    """)
+🚨 **Backend server is not running** """)
     st.stop()
 
 # Delete confirmation dialog
@@ -499,8 +430,7 @@ with st.sidebar:
     **Features:**
     - 🔒 100% Local Processing
     - 📄 PDF Document Upload
-    - 🔍 Semantic Search
-    - 💡 Relevant AI Answers
+    - 💡 Relevant Answers and explanations
     - 🚫 No Data Leaves Your Machine
     """)
     
@@ -511,7 +441,7 @@ with st.sidebar:
     1. **Upload** a legal PDF document
     2. **Wait** for processing (1-2 min)
     3. **Ask** questions in natural language
-    4. **Review** AI-generated insights
+    4. **Review** insights
     """)
     
     st.markdown("---")
@@ -553,16 +483,6 @@ ollama serve
             """)
     else:
         st.error("❌ Backend Offline")
-        st.markdown("""
-**Troubleshooting:**
-1. Ensure backend is running:
-   ```bash
-   cd backend
-   python app.py
-   ```
-2. Check if port 8000 is available
-3. Verify all dependencies are installed
-        """)
 
 
 # Footer
