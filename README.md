@@ -127,7 +127,6 @@ uvicorn app:app --reload
 
 ## 🚀 Roadmap
 
-- [ ] Role-based login (lawyer, police, judge)
 - [ ] Multi-document support with cross-file querying
 - [ ] Case timeline auto-extraction
 - [ ] Fine-tuned legal embedding model
