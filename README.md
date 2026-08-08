@@ -34,7 +34,7 @@ Legal Aid Assistant is a secure, fully local RAG pipeline that:
 | Layer | Technology |
 |---|---|
 | Backend API | FastAPI + Uvicorn |
-| PDF Parsing | PyMuPDF (fitz) |
+| PDF Parsing | PyPDF2 |
 | Embeddings | Ollama — `nomic-embed-text` |
 | Vector Store | FAISS (faiss-cpu) |
 | LLM / Generation | Ollama — `llama3:8b` |
